@@ -1,168 +1,259 @@
 /* ==============================================
    BIRTHDAY SITE - script.js
-   Responsável por:
-   1. Criar as pétalas flutuantes
-   2. Controlar a abertura da mensagem
-   3. Tocar / pausar a música
    ============================================== */
 
-/* ── Configurações fáceis de ajustar ──────────── */
+/* ── ✏️ TROQUE AQUI O ID DO VÍDEO DO YOUTUBE ──
+   Como pegar o ID:
+   No link https://www.youtube.com/watch?v=XXXXXXXXXXX
+   o ID é a parte após "v=" → XXXXXXXXXXX
+   ──────────────────────────────────────────── */
+const YOUTUBE_VIDEO_ID = 'LGvseHxQKWk'; // exemplo: "Thinking Out Loud" - Ed Sheeran
+
+/* ── Configurações gerais ────────────────────── */
 const CONFIG = {
-  petalCount: 18,          // número de pétalas na tela
-  petalEmojis: ['🌸', '✿', '🌷', '✦', '❀'],   // símbolos flutuantes
-  petalMinSize: 0.9,       // rem (tamanho mínimo)
-  petalMaxSize: 1.6,       // rem (tamanho máximo)
-  petalMinDuration: 8,     // segundos (mais lento)
-  petalMaxDuration: 18,    // segundos (mais rápido)
-  paragraphDelay: 0.18,    // segundos entre cada parágrafo ao revelar
+  /* Pétalas */
+  petalCount:       18,
+  petalEmojis:      ['🌸', '✿', '🌷', '✦', '❀'],
+  petalMinSize:     0.9,   // rem
+  petalMaxSize:     1.6,   // rem
+  petalMinDuration: 8,     // segundos
+  petalMaxDuration: 18,    // segundos
+
+  /* Typewriter */
+  titleSpeed:     55,   // ms por caractere no título
+  bodySpeed:      28,   // ms por caractere nos parágrafos
+  pauseBetween:   600,  // ms de pausa entre parágrafos
 };
 /* ────────────────────────────────────────────── */
 
 
 /* ==============================================
-   1. PÉTALAS FLUTUANTES
+   1. YOUTUBE PLAYER
+   A função onYouTubeIframeAPIReady é chamada
+   automaticamente pela API do YouTube quando
+   o script carrega.
+   ============================================== */
+let ytPlayer = null;
+let musicReady = false;
+let shouldPlayOnReady = false;
+
+// Chamada automática pela API do YouTube
+window.onYouTubeIframeAPIReady = function () {
+  ytPlayer = new YT.Player('yt-player', {
+    videoId: YOUTUBE_VIDEO_ID,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      modestbranding: 1,
+      loop: 1,
+      playlist: YOUTUBE_VIDEO_ID, // necessário para loop funcionar
+    },
+    events: {
+      onReady: () => {
+        musicReady = true;
+        ytPlayer.setVolume(0);
+        if (shouldPlayOnReady) startMusic();
+      },
+    },
+  });
+};
+
+function startMusic() {
+  if (!ytPlayer || !musicReady) {
+    shouldPlayOnReady = true; // toca assim que ficar pronto
+    return;
+  }
+  ytPlayer.playVideo();
+  fadeVolumeIn(55, 1500); // volume alvo: 55, fade em 1500ms
+}
+
+/* Fade-in suave do volume */
+function fadeVolumeIn(targetVol, durationMs) {
+  const steps    = 30;
+  const interval = durationMs / steps;
+  const increment = targetVol / steps;
+  let step = 0;
+  const timer = setInterval(() => {
+    step++;
+    ytPlayer.setVolume(Math.min(targetVol, increment * step));
+    if (step >= steps) clearInterval(timer);
+  }, interval);
+}
+
+
+/* ==============================================
+   2. PÉTALAS FLUTUANTES
    ============================================== */
 function createPetals() {
   const container = document.getElementById('petals-container');
   if (!container) return;
 
   for (let i = 0; i < CONFIG.petalCount; i++) {
-    const petal = document.createElement('span');
-    petal.classList.add('petal');
+    const el = document.createElement('span');
+    el.classList.add('petal');
+    el.textContent = CONFIG.petalEmojis[Math.floor(Math.random() * CONFIG.petalEmojis.length)];
 
-    // Símbolo aleatório
-    const emoji = CONFIG.petalEmojis[Math.floor(Math.random() * CONFIG.petalEmojis.length)];
-    petal.textContent = emoji;
+    el.style.left             = `${Math.random() * 100}%`;
+    const size                = CONFIG.petalMinSize + Math.random() * (CONFIG.petalMaxSize - CONFIG.petalMinSize);
+    el.style.fontSize         = `${size}rem`;
+    const dur                 = CONFIG.petalMinDuration + Math.random() * (CONFIG.petalMaxDuration - CONFIG.petalMinDuration);
+    el.style.animationDuration = `${dur}s`;
+    el.style.animationDelay   = `${Math.random() * -CONFIG.petalMaxDuration}s`; // já começou
 
-    // Posição horizontal aleatória
-    const leftPercent = Math.random() * 100;
-    petal.style.left = `${leftPercent}%`;
-
-    // Tamanho aleatório
-    const size = CONFIG.petalMinSize + Math.random() * (CONFIG.petalMaxSize - CONFIG.petalMinSize);
-    petal.style.fontSize = `${size}rem`;
-
-    // Duração e delay aleatórios para distribuição natural
-    const duration = CONFIG.petalMinDuration + Math.random() * (CONFIG.petalMaxDuration - CONFIG.petalMinDuration);
-    const delay    = Math.random() * -CONFIG.petalMaxDuration; // delay negativo = já começou
-    petal.style.animationDuration  = `${duration}s`;
-    petal.style.animationDelay     = `${delay}s`;
-
-    // Opacidade base variada
-    petal.style.opacity = (0.4 + Math.random() * 0.4).toString();
-
-    container.appendChild(petal);
+    container.appendChild(el);
   }
 }
 
 
 /* ==============================================
-   2. ABERTURA DA MENSAGEM
+   3. TYPEWRITER ENGINE
+   ============================================== */
+
+/**
+ * Digita um texto dentro de um elemento, caractere por caractere.
+ * Mantém um cursor piscante durante a digitação.
+ * Retorna uma Promise que resolve quando terminar.
+ */
+function typeText(element, text, speed) {
+  return new Promise((resolve) => {
+    // Limpa o conteúdo atual e cria o cursor
+    element.textContent = '';
+    const cursor = document.createElement('span');
+    cursor.classList.add('typewriter-cursor');
+    element.appendChild(cursor);
+
+    let index = 0;
+
+    function typeChar() {
+      if (index < text.length) {
+        // Insere o caractere antes do cursor
+        cursor.insertAdjacentText('beforebegin', text[index]);
+        index++;
+        setTimeout(typeChar, speed);
+      } else {
+        // Digitação concluída: remove cursor e resolve
+        cursor.remove();
+        resolve();
+      }
+    }
+
+    typeChar();
+  });
+}
+
+/**
+ * Digita todos os parágrafos [data-typewriter] em sequência.
+ * Cada parágrafo só começa depois que o anterior terminar.
+ */
+async function typeAllParagraphs() {
+  const paragraphs = document.querySelectorAll('[data-typewriter]');
+
+  for (const p of paragraphs) {
+    const originalText = p.dataset.originalText; // salvo antes de limpar
+    p.classList.add('typing'); // torna visível
+
+    await typeText(p, originalText, CONFIG.bodySpeed);
+
+    // Pequena pausa antes do próximo parágrafo
+    await pause(CONFIG.pauseBetween);
+  }
+
+  // Após todos os parágrafos, mostra o controle de música
+  showMusicControl();
+}
+
+function pause(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+/* ==============================================
+   4. SEQUÊNCIA DE ABERTURA
    ============================================== */
 function initOpenButton() {
   const openBtn        = document.getElementById('open-btn');
   const envelopeScreen = document.getElementById('envelope-screen');
   const messageScreen  = document.getElementById('message-screen');
+  const titleEl        = document.getElementById('letter-title-text');
+  const ornament       = document.getElementById('ornament');
 
   if (!openBtn || !envelopeScreen || !messageScreen) return;
 
+  // Salva o texto original de cada parágrafo (antes de qualquer manipulação)
+  document.querySelectorAll('[data-typewriter]').forEach(p => {
+    p.dataset.originalText = p.textContent.trim().replace(/\s+/g, ' ');
+    p.textContent = ''; // limpa para começar vazio
+  });
+
+  // Salva e limpa o título
+  const titleText = titleEl ? titleEl.textContent.trim().replace(/\s+/g, ' ') : '';
+  if (titleEl) titleEl.textContent = '';
+
   openBtn.addEventListener('click', () => {
-    // Desabilita o botão para evitar clique duplo
     openBtn.disabled = true;
 
-    // Fade-out da tela do envelope
+    // 1. Fade-out da tela do envelope
     envelopeScreen.classList.remove('active');
 
-    // Após a transição do envelope, mostra a mensagem
-    const envelopeDuration = 900; // ms – deve coincidir com a transição CSS
-    setTimeout(() => {
+    setTimeout(async () => {
+      // 2. Fade-in da tela da mensagem
       messageScreen.classList.add('active');
 
-      // Aplica delays escalonados nos parágrafos para entrada suave
-      applyParagraphDelays();
+      // 3. Inicia música
+      startMusic();
 
-      // Toca a música
-      playMusic();
-    }, envelopeDuration);
+      // 4. Aguarda o card aparecer antes de digitar
+      await pause(700);
+
+      // 5. Digita o título
+      if (titleEl && titleText) {
+        await typeText(titleEl, titleText, CONFIG.titleSpeed);
+        await pause(400);
+      }
+
+      // 6. Mostra o ornamento
+      if (ornament) ornament.classList.add('visible');
+      await pause(350);
+
+      // 7. Digita os parágrafos
+      await typeAllParagraphs();
+
+    }, 900); // duração do fade-out do envelope
   });
 }
 
-/* Escalonamento dos parágrafos */
-function applyParagraphDelays() {
-  const paragraphs = document.querySelectorAll('.letter-body p');
-  paragraphs.forEach((p, index) => {
-    // Delay base de 0.4s + incremento por parágrafo
-    const delay = 0.4 + index * CONFIG.paragraphDelay;
-    p.style.transitionDelay = `${delay}s`;
-  });
-
-  // A assinatura entra por último
-  const sign = document.querySelector('.letter-sign');
-  if (sign) {
-    const signDelay = 0.4 + paragraphs.length * CONFIG.paragraphDelay + 0.1;
-    sign.style.transitionDelay = `${signDelay}s`;
-  }
+function showMusicControl() {
+  const control = document.getElementById('music-control');
+  if (control) control.classList.add('visible');
 }
 
 
 /* ==============================================
-   3. CONTROLE DE MÚSICA
+   5. CONTROLE DE MÚSICA (botão pausar/tocar)
    ============================================== */
-function playMusic() {
-  const audio = document.getElementById('bg-music');
-  if (!audio) return;
-
-  // Tenta reproduzir (pode ser bloqueado pelo browser se não houver interação)
-  audio.volume = 0;
-  audio.play().then(() => {
-    // Fade-in do volume para uma entrada suave
-    fadeAudioIn(audio, 0.55, 2000);
-  }).catch(() => {
-    // Silenciosamente falha se o browser bloquear – o botão ainda funciona
-    console.info('Autoplay bloqueado: o usuário pode clicar em "pausar música" para iniciar.');
-  });
-}
-
-/* Fade-in gradual do áudio */
-function fadeAudioIn(audio, targetVolume, durationMs) {
-  const steps    = 40;
-  const interval = durationMs / steps;
-  const increment = targetVolume / steps;
-  let currentStep = 0;
-
-  const timer = setInterval(() => {
-    currentStep++;
-    audio.volume = Math.min(targetVolume, increment * currentStep);
-    if (currentStep >= steps) clearInterval(timer);
-  }, interval);
-}
-
 function initMusicButton() {
-  const musicBtn   = document.getElementById('music-btn');
-  const musicIcon  = document.getElementById('music-icon');
-  const musicLabel = document.getElementById('music-label');
-  const audio      = document.getElementById('bg-music');
+  const btn   = document.getElementById('music-btn');
+  const icon  = document.getElementById('music-icon');
+  const label = document.getElementById('music-label');
+  if (!btn) return;
 
-  if (!musicBtn || !audio) return;
+  let playing = true;
 
-  let isPlaying = true; // presume que vai tocar ao abrir
+  btn.addEventListener('click', () => {
+    if (!ytPlayer || !musicReady) return;
 
-  musicBtn.addEventListener('click', () => {
-    if (isPlaying) {
-      // Pausar
-      audio.pause();
-      musicIcon.textContent  = '♩';
-      musicLabel.textContent = 'tocar música';
-      musicBtn.classList.add('paused');
-      isPlaying = false;
+    if (playing) {
+      ytPlayer.pauseVideo();
+      icon.textContent  = '♩';
+      label.textContent = 'tocar música';
+      btn.classList.add('paused');
     } else {
-      // Retomar
-      audio.play().catch(() => {});
-      musicIcon.textContent  = '♪';
-      musicLabel.textContent = 'pausar música';
-      musicBtn.classList.remove('paused');
-      isPlaying = true;
+      ytPlayer.playVideo();
+      icon.textContent  = '♪';
+      label.textContent = 'pausar música';
+      btn.classList.remove('paused');
     }
+    playing = !playing;
   });
 }
 
