@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para você ✨</title>
+
+  <!-- Google Fonts: display serif + elegant body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       CAMADA DE PÉTALAS FLUTUANTES (gerada via JS)
+       ============================================= -->
+  <div id="petals-container" aria-hidden="true"></div>
+
+  <!-- =============================================
+       TELA INICIAL: ENVELOPE / CARTA
+       ============================================= -->
+  <section id="envelope-screen" class="screen active">
+
+    <div class="envelope-wrapper">
+
+      <!-- Lacre decorativo no centro -->
+      <div class="wax-seal">
+        <span class="seal-icon">✦</span>
+      </div>
+
+      <!-- Texto de convite -->
+      <p class="envelope-hint">Uma mensagem chegou para você</p>
+
+      <!-- Botão principal -->
+      <button id="open-btn" class="open-button" aria-label="Abrir mensagem">
+        <span class="btn-text">Abrir mensagem</span>
+        <span class="btn-glow" aria-hidden="true"></span>
+      </button>
+
+      <!-- Nota de rodapé sutil -->
+      <p class="envelope-footer">com muito carinho 🌸</p>
+
+    </div>
+
+  </section>
+
+  <!-- =============================================
+       TELA DA MENSAGEM
+       ============================================= -->
+  <section id="message-screen" class="screen">
+
+    <article class="letter-card">
+
+      <!-- Cabeçalho da carta -->
+      <header class="letter-header">
+        <!-- ✏️ EDITE O NOME AQUI -->
+        <h1 class="letter-title">Feliz Aniversário,<br /><em>Ana</em> 🌷</h1>
+        <div class="header-ornament" aria-hidden="true">✦ ✦ ✦</div>
+      </header>
+
+      <!-- Corpo da mensagem -->
+      <div class="letter-body">
+
+        <!-- ✏️ EDITE O TEXTO AQUI -->
+        <p>
+          Hoje é um dia especial, e eu simplesmente não poderia deixar ele passar
+          sem te dizer o quanto você é importante pra mim.
+        </p>
+        <p>
+          Você é daquelas pessoas raras que fazem o mundo ficar mais bonito só de
+          existir. Obrigada por cada risada, cada conversa de madrugada, cada
+          conselho honesto e por estar ao meu lado nos momentos que mais importaram.
+        </p>
+        <p>
+          Que esse novo ano da sua vida seja cheio de tudo que você merece:
+          alegria, paz, aventuras e muito amor. Que os seus sonhos cheguem mais
+          perto e que você continue sendo exatamente quem você é.
+        </p>
+        <p class="letter-sign">
+          Com todo o meu amor,<br />
+          <!-- ✏️ EDITE SEU NOME AQUI -->
+          <strong>sua melhor amiga 💛</strong>
+        </p>
+
+      </div>
+
+    </article>
+
+    <!-- Controle de música -->
+    <div class="music-control" id="music-control" aria-label="Controle de música">
+      <button id="music-btn" class="music-button" aria-label="Pausar música">
+        <span id="music-icon">♪</span>
+        <span id="music-label">pausar música</span>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- =============================================
+       ÁUDIO (coloque o arquivo de música na pasta)
+       Para usar: salve um arquivo .mp3 como "music.mp3"
+       na mesma pasta do index.html
+       ============================================= -->
+  <audio id="bg-music" loop>
+    <!-- ✏️ Troque pelo caminho do seu arquivo de música -->
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

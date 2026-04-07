@@ -1,0 +1,461 @@
+/* ==============================================
+   VARIÁVEIS DE TEMA
+   Altere aqui para mudar todo o visual do site
+   ============================================== */
+:root {
+  --primary-color:    #c9728a;   /* rosa principal */
+  --secondary-color:  #e8b4c0;   /* rosa claro */
+  --background-color: #fdf6f0;   /* creme quente */
+  --accent-color:     #a85470;   /* rosa escuro (destaques) */
+  --text-color:       #3d2b30;   /* marrom quente para texto */
+  --card-bg:          #fffaf8;   /* fundo do card de carta */
+  --card-border:      #e8d5d0;   /* borda suave do card */
+
+  /* Tipografia */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', 'Helvetica Neue', sans-serif;
+
+  /* Transições */
+  --transition-slow: 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-med:  0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==============================================
+   RESET E BASE
+   ============================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* evita scroll durante animação */
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  position: relative;
+}
+
+/* ==============================================
+   FUNDO COM GRADIENTE ANIMADO
+   ============================================== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(201, 114, 138, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(232, 180, 192, 0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 10%, rgba(168, 84, 112, 0.07) 0%, transparent 50%);
+  animation: bgPulse 10s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes bgPulse {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* ==============================================
+   PÉTALAS FLUTUANTES (elementos gerados por JS)
+   ============================================== */
+#petals-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -60px;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: petalFall linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* ==============================================
+   SISTEMA DE TELAS (screen)
+   ============================================== */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 2;
+
+  /* Estado oculto por padrão */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-slow);
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ==============================================
+   TELA DO ENVELOPE
+   ============================================== */
+.envelope-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  text-align: center;
+  animation: fadeUp 1.2s var(--transition-med) both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Lacre de cera decorativo */
+.wax-seal {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--secondary-color), var(--primary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 20px rgba(201, 114, 138, 0.35),
+    0 0 0 6px rgba(201, 114, 138, 0.12);
+  animation: sealGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes sealGlow {
+  from {
+    box-shadow:
+      0 4px 20px rgba(201, 114, 138, 0.35),
+      0 0 0 6px rgba(201, 114, 138, 0.12);
+  }
+  to {
+    box-shadow:
+      0 6px 30px rgba(201, 114, 138, 0.55),
+      0 0 0 10px rgba(201, 114, 138, 0.08);
+  }
+}
+
+.seal-icon {
+  font-size: 1.8rem;
+  color: var(--card-bg);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* Texto hint acima do botão */
+.envelope-hint {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-color);
+  opacity: 0.75;
+  letter-spacing: 0.02em;
+}
+
+/* Botão "Abrir mensagem" */
+.open-button {
+  position: relative;
+  background: none;
+  border: 1.5px solid var(--primary-color);
+  color: var(--primary-color);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.85rem 2.4rem;
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: color var(--transition-med), border-color var(--transition-med);
+}
+
+.open-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--primary-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-med);
+  z-index: 0;
+}
+
+.open-button:hover::before,
+.open-button:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.open-button:hover,
+.open-button:focus-visible {
+  color: var(--card-bg);
+  outline: none;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* Brilho pulsante no botão */
+.btn-glow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 4px;
+  border: 1px solid rgba(201, 114, 138, 0.3);
+  animation: btnGlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes btnGlow {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50%       { opacity: 1; transform: scale(1.04); }
+}
+
+/* Nota de rodapé */
+.envelope-footer {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-color);
+  opacity: 0.45;
+}
+
+/* ==============================================
+   TELA DA MENSAGEM
+   ============================================== */
+#message-screen {
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+/* Card da carta */
+.letter-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: clamp(2rem, 7vw, 3.5rem) clamp(1.8rem, 7vw, 3.5rem);
+  max-width: 640px;
+  width: 100%;
+  box-shadow:
+    0 2px 8px rgba(61, 43, 48, 0.06),
+    0 12px 40px rgba(201, 114, 138, 0.12);
+  position: relative;
+  overflow: hidden;
+
+  /* Animação de entrada */
+  opacity: 0;
+  transform: translateY(32px) scale(0.97);
+  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+}
+
+/* Linha decorativa lateral */
+.letter-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, var(--secondary-color), transparent);
+}
+
+/* Quando a tela se torna ativa, o card anima */
+#message-screen.active .letter-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Cabeçalho da carta */
+.letter-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.letter-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.25;
+  color: var(--text-color);
+  letter-spacing: 0.01em;
+}
+
+.letter-title em {
+  font-style: italic;
+  color: var(--primary-color);
+}
+
+.header-ornament {
+  margin-top: 0.8rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.6em;
+  color: var(--secondary-color);
+  opacity: 0.8;
+}
+
+/* Corpo do texto */
+.letter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.letter-body p {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-color);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+/* Cada parágrafo entra com delay escalonado via JS */
+#message-screen.active .letter-body p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Paragráfo de assinatura */
+.letter-sign {
+  margin-top: 0.5rem;
+  text-align: right;
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+#message-screen.active .letter-sign {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letter-sign strong {
+  color: var(--accent-color);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* ==============================================
+   CONTROLE DE MÚSICA
+   ============================================== */
+.music-control {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease 1.4s, transform 0.6s ease 1.4s;
+}
+
+#message-screen.active .music-control {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.music-button {
+  background: none;
+  border: 1px solid rgba(201, 114, 138, 0.35);
+  border-radius: 100px;
+  padding: 0.5rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--primary-color);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--transition-med), border-color var(--transition-med);
+}
+
+.music-button:hover,
+.music-button:focus-visible {
+  background: rgba(201, 114, 138, 0.08);
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+#music-icon {
+  font-size: 1rem;
+  line-height: 1;
+  animation: musicBounce 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes musicBounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+
+/* Quando pausado, para a animação do ícone */
+.music-button.paused #music-icon {
+  animation: none;
+}
+
+/* ==============================================
+   RESPONSIVIDADE
+   ============================================== */
+@media (max-width: 480px) {
+  .letter-card {
+    border-radius: 2px;
+  }
+
+  .wax-seal {
+    width: 64px;
+    height: 64px;
+  }
+
+  .seal-icon {
+    font-size: 1.4rem;
+  }
+}
+
+/* ==============================================
+   ACESSIBILIDADE: respeitar preferência de movimento
+   ============================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
