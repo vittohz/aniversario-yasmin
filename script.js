@@ -7,7 +7,7 @@
    No link https://www.youtube.com/watch?v=XXXXXXXXXXX
    o ID é a parte após "v=" → XXXXXXXXXXX
    ──────────────────────────────────────────── */
-const YOUTUBE_VIDEO_ID = 'DnGdoEa1tPg'; 
+const YOUTUBE_VIDEO_ID = 'qREjXwZQvHE'; 
 
 /* ── Configurações gerais ────────────────────── */
 const CONFIG = {
