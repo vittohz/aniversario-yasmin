@@ -674,7 +674,7 @@ body {
 }
 
 .vinyl-needle.on-groove {
-  transform: rotate(-2deg);
+  transform: rotate(4deg);
 }
 
 /* Info do player */
