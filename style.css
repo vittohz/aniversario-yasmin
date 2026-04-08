@@ -813,3 +813,145 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ===============================
+POLAROID MEMORIES — CINEMATIC
+=============================== */
+
+.polaroid-scene{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+}
+
+/* base polaroid */
+
+.polaroid{
+  position:absolute;
+
+  width:180px;
+
+  background:#fff;
+
+  padding:12px 12px 36px 12px;
+
+  border-radius:3px;
+
+  box-shadow:
+  0 30px 80px rgba(0,0,0,.7),
+  0 8px 18px rgba(0,0,0,.4);
+
+  transform-origin:center;
+
+  animation:
+  polaroidFloat 7s ease-in-out infinite alternate;
+}
+
+/* imagem */
+
+.polaroid img{
+
+  width:100%;
+  display:block;
+
+  filter:
+  contrast(1.08)
+  saturate(.92)
+  brightness(.96)
+  sepia(.05);
+}
+
+/* legenda escrita */
+
+.polaroid figcaption{
+
+  margin-top:10px;
+
+  font-family:"IM Fell English", serif;
+
+  font-size:14px;
+
+  text-align:center;
+
+  color:#2c2c2c;
+
+  opacity:.8;
+}
+
+/* fita adesiva */
+
+.polaroid .tape{
+
+  position:absolute;
+
+  top:-14px;
+  left:50%;
+
+  transform:translateX(-50%) rotate(-4deg);
+
+  width:70px;
+  height:22px;
+
+  background:rgba(255,255,255,.55);
+
+  backdrop-filter:blur(3px);
+
+  box-shadow:
+  0 2px 6px rgba(0,0,0,.25);
+
+  border-radius:2px;
+}
+
+/* animação leve */
+
+@keyframes polaroidFloat{
+
+  0%{
+    transform:translateY(0) rotate(var(--rot));
+  }
+
+  100%{
+    transform:translateY(-10px) rotate(var(--rot));
+  }
+
+}
+
+/* hover elegante */
+
+.polaroid:hover{
+
+  transform:
+  scale(1.05)
+  rotate(var(--rot));
+
+  box-shadow:
+  0 45px 120px rgba(0,0,0,.85),
+  0 12px 28px rgba(0,0,0,.5);
+}
+
+/* posições */
+
+.p1{
+  top:8%;
+  left:6%;
+  --rot:-8deg;
+}
+
+.p2{
+  top:16%;
+  right:10%;
+  --rot:6deg;
+}
+
+.p3{
+  bottom:20%;
+  left:12%;
+  --rot:5deg;
+}
+
+.p4{
+  bottom:12%;
+  right:14%;
+  --rot:-7deg;
+}
