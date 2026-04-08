@@ -188,13 +188,13 @@ function setPlayerState(playing) {
     disc.classList.add('spinning');
     needle && needle.classList.add('on-groove');
     statusDot  && statusDot.classList.add('playing');
-    if (statusLbl) statusLbl.textContent = 'tocando agora';
+    if (statusLbl) statusLbl.textContent = 'Tocando agora';
     if (musicIcon) musicIcon.textContent = '⏸';
   } else {
     disc.classList.remove('spinning');
     needle && needle.classList.remove('on-groove');
     statusDot  && statusDot.classList.remove('playing');
-    if (statusLbl) statusLbl.textContent = 'pausado';
+    if (statusLbl) statusLbl.textContent = 'Pausado';
     if (musicIcon) musicIcon.textContent = '▶';
   }
 }
