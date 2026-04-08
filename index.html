@@ -7,60 +7,93 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Raleway:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Pétalas flutuantes (geradas por JS) -->
+  <!-- Grain overlay para textura cinematográfica -->
+  <div class="grain" aria-hidden="true"></div>
+ 
+  <!-- Partículas flutuantes (geradas via JS) -->
   <div id="petals-container" aria-hidden="true"></div>
+ 
+  <!-- Brilhos de fundo atmosféricos -->
+  <div class="atmosphere" aria-hidden="true">
+    <div class="atm-orb atm-orb--1"></div>
+    <div class="atm-orb atm-orb--2"></div>
+    <div class="atm-orb atm-orb--3"></div>
+  </div>
 
-  <!-- =============================================
-       TELA 1: ENVELOPE
+    <!-- =============================================
+       TELA INICIAL: ENVELOPE / CARTA
        ============================================= -->
   <section id="envelope-screen" class="screen active">
+ 
     <div class="envelope-wrapper">
-
-      <div class="wax-seal">
-        <span class="seal-icon">✦</span>
+ 
+      <!-- Ornamento decorativo gótico -->
+      <div class="gothic-ornament" aria-hidden="true">
+        <span class="orn-line"></span>
+        <span class="orn-symbol">✦</span>
+        <span class="orn-line"></span>
       </div>
-
+ 
+      <!-- Lacre de cera dark -->
+      <div class="wax-seal">
+        <div class="seal-inner">
+          <span class="seal-icon">✦</span>
+        </div>
+        <div class="seal-ring"></div>
+      </div>
+ 
+      <!-- Texto de convite -->
       <p class="envelope-hint">Rapaz parece que chegou uma mensagem pro ce ó</p>
-
+ 
+      <!-- Botão principal -->
       <button id="open-btn" class="open-button" aria-label="Abrir mensagem">
+        <span class="btn-bg"></span>
         <span class="btn-text">Abrir mensagem (não é vírus eu juro)</span>
-        <span class="btn-glow" aria-hidden="true"></span>
       </button>
-
+ 
+      <!-- Nota de rodapé sutil -->
       <p class="envelope-footer">eu juro que não chorei escrevendo isso...</p>
+ 
     </div>
+ 
   </section>
 
   <!-- =============================================
        TELA 2: CARTA
        ============================================= -->
   <section id="message-screen" class="screen">
-    <article class="letter-card">
-
-      <header class="letter-header">
-        <!--
-          ✏️ TÍTULO: o JS vai digitar este texto com efeito typewriter.
-             Edite o conteúdo livremente.
-        -->
-        <h1 class="letter-title" id="letter-title-text">
-          FELIZ ANIVERSÁRIO YASMINNNN 
-        </h1>
-        <div class="header-ornament" id="ornament" aria-hidden="true">✦ ✦ ✦</div>
-      </header>
-
-      <!--
-        ✏️ CORPO DA MENSAGEM.
-        Cada parágrafo com [data-typewriter] será digitado em sequência.
-        Edite o texto livremente — sem tags HTML dentro dos <p>.
-      -->
-      <div class="letter-body" id="letter-body">
-
+ 
+    <div class="message-layout">
+ 
+      <article class="letter-card">
+ 
+        <!-- Detalhe de canto decorativo -->
+        <span class="corner corner--tl" aria-hidden="true"></span>
+        <span class="corner corner--tr" aria-hidden="true"></span>
+        <span class="corner corner--bl" aria-hidden="true"></span>
+        <span class="corner corner--br" aria-hidden="true"></span>
+ 
+        <!-- Cabeçalho da carta -->
+        <header class="letter-header">
+          <div class="letter-pre-title" aria-hidden="true">✦ ✦ ✦</div>
+          <!-- ✏️ EDITE O NOME AQUI -->
+          <h1 class="letter-title">FELIZ ANIVERSÁRIO<br /><em>YASMINNNNN</em></h1>
+          <div class="header-ornament" aria-hidden="true">
+            <span class="orn-line"></span>
+            <span class="orn-symbol"></span>
+            <span class="orn-line"></span>
+          </div>
+        </header>
+ 
+        <!-- Corpo da mensagem -->
+        <div class="letter-body">
+  
         <p data-typewriter>
           IAIII FIAA, são 19 anos pqp ta ficando velha mds mas vão vir muitos mais pela frente.
           São quase 10 anos de amizade e não sei se a vida teria sido tão boa sem você, durante todo esse tempo passamos por muitas coisas
@@ -93,23 +126,75 @@
 
     </article>
 
-    <!-- Controle de música -->
-    <div class="music-control" id="music-control">
-      <button id="music-btn" class="music-button" aria-label="Pausar música">
-        <span id="music-icon">♪</span>
-        <span id="music-label">pausar música</span>
-      </button>
+      <!-- =============================================
+           PLAYER DE MÚSICA ESTILO VINYL
+           ============================================= -->
+      <div class="vinyl-player" id="vinyl-player">
+ 
+        <!-- Disco de vinil -->
+        <div class="vinyl-wrap">
+          <div class="vinyl-disc" id="vinyl-disc">
+            <!-- Ranhuras do disco -->
+            <div class="vinyl-groove vinyl-groove--1"></div>
+            <div class="vinyl-groove vinyl-groove--2"></div>
+            <div class="vinyl-groove vinyl-groove--3"></div>
+            <!-- Label central com capa do álbum -->
+            <div class="vinyl-label">
+              <!--
+                ✏️ CAPA DO ÁLBUM:
+                Substitua o src abaixo pelo caminho da sua imagem de capa.
+                Ex: src="cover.jpg"
+                Se não tiver imagem, o gradiente de fundo será exibido.
+              -->
+              <img
+                class="vinyl-cover"
+                id="vinyl-cover"
+                src=""
+                alt="Capa do álbum"
+                onerror="this.style.display='none'"
+              />
+              <div class="vinyl-label-default" id="vinyl-label-default">✦</div>
+            </div>
+            <!-- Pino central -->
+            <div class="vinyl-spindle"></div>
+          </div>
+          <!-- Agulha do toca-discos -->
+          <div class="vinyl-needle" id="vinyl-needle"></div>
+        </div>
+ 
+        <!-- Informações da música -->
+        <div class="player-info">
+          <!-- ✏️ EDITE O NOME DA MÚSICA AQUI -->
+          <p class="player-track">Nome da Música</p>
+          <!-- ✏️ EDITE O ARTISTA AQUI -->
+          <p class="player-artist">Nome do Artista</p>
+ 
+          <div class="player-controls">
+            <div class="player-status" id="player-status">
+              <span class="status-dot" id="status-dot"></span>
+              <span id="status-label">aguardando…</span>
+            </div>
+            <button id="music-btn" class="player-btn" aria-label="Pausar música">
+              <span id="music-icon">▶</span>
+            </button>
+          </div>
+        </div>
+ 
+      </div>
+ 
     </div>
+ 
   </section>
-
+ 
   <!-- =============================================
-       YOUTUBE PLAYER INVISÍVEL
-       ✏️ Para trocar a música: edite YOUTUBE_VIDEO_ID
-          no início do arquivo script.js
+       ÁUDIO
+       ✏️ Coloque seu arquivo de música na mesma pasta
+       e atualize o src abaixo para "music.mp3"
        ============================================= -->
-  <div id="yt-player" aria-hidden="true"></div>
-
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+ 
   <script src="script.js"></script>
 </body>
 </html>
