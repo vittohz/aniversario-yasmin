@@ -972,7 +972,7 @@ body {
 /* Fita horizontal — sobre o topo */
 .polaroid-tape--h {
   width: 56px;
-  height: 29px;
+  height: 23px;
   top:  -9px;
   left: 50%;
   transform: translateX(-50%) rotate(-1.5deg);
@@ -998,7 +998,7 @@ body {
 
 /* Fita vertical — para o canto inferior esquerdo */
 .polaroid-tape--v {
-  width: 29px;
+  width: 23px;
   height: 56px;
   top:  50%;
   right: -9px;
