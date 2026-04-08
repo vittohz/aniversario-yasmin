@@ -13,14 +13,14 @@ const YOUTUBE_VIDEO_ID = 'DnGdoEa1tPg';
 const CONFIG = {
   /* Pétalas */
   petalCount:       18,
-  petalEmojis:      ['🌸', '✿', '🌷', '✦', '❀'],
+  petalEmojis:      ['🥀', '⛧', '🕯️', '✦', '☾'],
   petalMinSize:     0.9,   // rem
   petalMaxSize:     1.6,   // rem
   petalMinDuration: 8,     // segundos
   petalMaxDuration: 18,    // segundos
 
   /* Typewriter */
-  titleSpeed:     55,   // ms por caractere no título
+  titleSpeed:     35,   // ms por caractere no título
   bodySpeed:      28,   // ms por caractere nos parágrafos
   pauseBetween:   600,  // ms de pausa entre parágrafos
 };
