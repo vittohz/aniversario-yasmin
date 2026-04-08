@@ -830,7 +830,7 @@ body {
 /* ── Base da polaroid ────────────────────────── */
 .polaroid {
   position: absolute;
-  width: 178px;
+  width: 330px;
   pointer-events: auto;
   cursor: default;
   margin: 0;
