@@ -830,7 +830,7 @@ body {
 /* ── Base da polaroid ────────────────────────── */
 .polaroid {
   position: absolute;
-  width: 330px;
+  width: 270px;
   pointer-events: auto;
   cursor: default;
   margin: 0;
@@ -952,7 +952,7 @@ body {
   /* Fonte cursiva sutil */
   font-family: 'IM Fell English', Georgia, serif;
   font-style: italic;
-  font-size: 0.72rem;
+  font-size: 1rem;
   letter-spacing: 0.04em;
   color: #4a3f34;
   opacity: 0.82;
@@ -972,7 +972,7 @@ body {
 /* Fita horizontal — sobre o topo */
 .polaroid-tape--h {
   width: 56px;
-  height: 18px;
+  height: 29px;
   top:  -9px;
   left: 50%;
   transform: translateX(-50%) rotate(-1.5deg);
@@ -998,7 +998,7 @@ body {
 
 /* Fita vertical — para o canto inferior esquerdo */
 .polaroid-tape--v {
-  width: 18px;
+  width: 29px;
   height: 56px;
   top:  50%;
   right: -9px;
