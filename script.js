@@ -10,8 +10,8 @@
 /* ── Configurações fáceis de ajustar ──────────── */
 const CONFIG = {
   /* Partículas flutuantes */
-  petalCount:       20,
-  petalEmojis:      ['🥀', '✦', '✧', '·', '°'],  // símbolos dark
+  petalCount:       35,
+  petalEmojis:      ['𑣲', '✦', '𖦹', '·', '𖹭'],  // símbolos dark
   petalMinSize:     0.65,  // rem
   petalMaxSize:     1.2,   // rem
   petalMinDuration: 10,    // segundos (lento)
