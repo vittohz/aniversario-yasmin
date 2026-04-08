@@ -2,13 +2,13 @@
    VARIÁVEIS DE TEMA
    ============================================== */
 :root {
-  --primary-color:    #c9728a;
-  --secondary-color:  #e8b4c0;
-  --background-color: #fdf6f0;
-  --accent-color:     #a85470;
-  --text-color:       #3d2b30;
-  --card-bg:          #fffaf8;
-  --card-border:      #e8d5d0;
+  --primary-color:    #6b1f2f;  /* vinho escuro */
+  --secondary-color:  #3b0f1a;  /* vermelho quase preto */
+  --background-color: #0e0e11;  /* preto azulado */
+  --accent-color:     #9c3b52;  /* rosa escuro queimado */
+  --text-color:       #e6e0e2;  /* branco suave */
+  --card-bg:          #16161b;  /* cinza preto */
+  --card-border:      #2a1a1f;
 
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'Jost', 'Helvetica Neue', sans-serif;
