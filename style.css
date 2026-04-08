@@ -269,7 +269,7 @@ body.message-open #message-screen {
     0 2px 8px rgba(61, 43, 48, 0.06),
     0 12px 40px rgba(201, 114, 138, 0.12);
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
 
   opacity: 0;
   transform: translateY(32px) scale(0.97);
