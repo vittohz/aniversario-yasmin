@@ -813,3 +813,313 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ================================================
+   POLAROID GALLERY
+   Adicione ao final do seu style.css
+   ================================================ */
+
+/* ── Stage: overlay fixo que cobre toda a tela ── */
+.polaroids-stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* não bloqueia cliques no envelope */
+  z-index: 5;           /* abaixo do envelope (z-index 10+) */
+}
+
+/* ── Base da polaroid ────────────────────────── */
+.polaroid {
+  position: absolute;
+  width: 178px;
+  pointer-events: auto;
+  cursor: default;
+  margin: 0;
+
+  /* Moldura física */
+  background: #f5f0e8;           /* papel envelhecido */
+  padding: 12px 12px 42px 12px;  /* mais espaço embaixo — estilo Polaroid */
+
+  /* Sombra cinematográfica em camadas */
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.35),
+    0 8px 20px rgba(0,0,0,.55),
+    0 24px 60px rgba(0,0,0,.40),
+    inset 0 0 0 1px rgba(255,255,255,.06);
+
+  /* Textura suave de papel */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,.018) 2px,
+      rgba(0,0,0,.018) 4px
+    );
+
+  transition:
+    transform 0.45s cubic-bezier(.22,.68,0,1.2),
+    box-shadow 0.45s ease;
+
+  will-change: transform;
+}
+
+/* ── Posição e rotação de cada canto ─────────── */
+.polaroid--tl {
+  top:  52px;
+  left: 44px;
+  transform: rotate(-7deg);
+  animation: float-tl 7s ease-in-out infinite;
+}
+
+.polaroid--tr {
+  top:  64px;
+  right: 52px;
+  transform: rotate(5.5deg);
+  animation: float-tr 8.5s ease-in-out infinite;
+}
+
+.polaroid--bl {
+  bottom: 64px;
+  left:   48px;
+  transform: rotate(4deg);
+  animation: float-bl 9s ease-in-out infinite;
+}
+
+.polaroid--br {
+  bottom: 52px;
+  right:  44px;
+  transform: rotate(-6deg);
+  animation: float-br 7.5s ease-in-out infinite;
+}
+
+/* ── Foto dentro da moldura ──────────────────── */
+.polaroid-frame {
+  position: relative;
+  width: 100%;
+  /* Altura da área da foto — proporção ~4:3 */
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #1a1714; /* fallback escuro */
+
+  /* Borda interna levemente escurecida — simula profundidade */
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.30);
+}
+
+.polaroid-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+
+  /* Filtro envelhecido / cinematográfico */
+  filter: sepia(0.28) contrast(1.06) brightness(0.92) saturate(0.85);
+  transition: filter 0.4s ease;
+}
+
+/* Imagem quebrada — esconde sem quebrar o layout */
+.polaroid-img.broken {
+  display: none;
+}
+
+/* Placeholder exibido quando não há foto ou ela falha */
+.polaroid-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: rgba(255,255,255,.15);
+  letter-spacing: 0;
+  pointer-events: none;
+
+  /* Gradiente escuro de fundo — visual elegante mesmo sem foto */
+  background:
+    radial-gradient(ellipse at 40% 35%, #2a2018 0%, #0d0b09 100%);
+}
+
+/* Quando foto existe, esconde o placeholder */
+.polaroid-img:not(.broken) ~ .polaroid-placeholder {
+  display: none;
+}
+
+/* ── Legenda manuscrita embaixo ──────────────── */
+.polaroid-caption {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+
+  /* Fonte cursiva sutil */
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: #4a3f34;
+  opacity: 0.82;
+  line-height: 1;
+}
+
+/* ── Fita adesiva ────────────────────────────── */
+.polaroid-tape {
+  position: absolute;
+  background: rgba(255, 240, 190, 0.48); /* âmbar translúcido */
+  border-left:  1px solid rgba(255,220,120,.25);
+  border-right: 1px solid rgba(255,220,120,.25);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Fita horizontal — sobre o topo */
+.polaroid-tape--h {
+  width: 56px;
+  height: 18px;
+  top:  -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  border-top:    1px solid rgba(255,220,120,.25);
+  border-bottom: 1px solid rgba(255,220,120,.25);
+
+  /* Textura de fita */
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(255,255,255,.08) 3px,
+      rgba(255,255,255,.08) 6px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.12) 0%,
+      rgba(255,240,180,.40) 50%,
+      rgba(255,255,255,.12) 100%
+    );
+}
+
+/* Fita vertical — para o canto inferior esquerdo */
+.polaroid-tape--v {
+  width: 18px;
+  height: 56px;
+  top:  50%;
+  right: -9px;
+  transform: translateY(-50%) rotate(1deg);
+  border-top:    1px solid rgba(255,220,120,.25);
+  border-bottom: 1px solid rgba(255,220,120,.25);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255,255,255,.08) 3px,
+      rgba(255,255,255,.08) 6px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.12) 0%,
+      rgba(255,240,180,.40) 50%,
+      rgba(255,255,255,.12) 100%
+    );
+}
+
+/* ── Hover elegante ──────────────────────────── */
+.polaroid:hover {
+  box-shadow:
+    0 4px 8px  rgba(0,0,0,.45),
+    0 16px 40px rgba(0,0,0,.65),
+    0 40px 80px rgba(0,0,0,.35),
+    inset 0 0 0 1px rgba(255,255,255,.10);
+  z-index: 20;
+}
+
+.polaroid--tl:hover { transform: rotate(-3deg) scale(1.06) translateY(-4px); }
+.polaroid--tr:hover { transform: rotate(2.5deg) scale(1.06) translateY(-4px); }
+.polaroid--bl:hover { transform: rotate(1.5deg) scale(1.06) translateY(-4px); }
+.polaroid--br:hover { transform: rotate(-2.5deg) scale(1.06) translateY(-4px); }
+
+.polaroid:hover .polaroid-img {
+  filter: sepia(0.10) contrast(1.08) brightness(0.96) saturate(0.95);
+}
+
+/* ── Animações de flutuação ──────────────────── */
+/* Cada polaroid tem ritmo e amplitude levemente diferente */
+
+@keyframes float-tl {
+  0%,100% { transform: rotate(-7deg)   translateY(0px);    }
+  40%     { transform: rotate(-6.2deg) translateY(-6px);   }
+  70%     { transform: rotate(-7.6deg) translateY(-2px);   }
+}
+
+@keyframes float-tr {
+  0%,100% { transform: rotate(5.5deg)  translateY(0px);    }
+  35%     { transform: rotate(4.8deg)  translateY(-8px);   }
+  65%     { transform: rotate(6.2deg)  translateY(-3px);   }
+}
+
+@keyframes float-bl {
+  0%,100% { transform: rotate(4deg)    translateY(0px);    }
+  45%     { transform: rotate(3.2deg)  translateY(-5px);   }
+  75%     { transform: rotate(4.8deg)  translateY(-1px);   }
+}
+
+@keyframes float-br {
+  0%,100% { transform: rotate(-6deg)   translateY(0px);    }
+  38%     { transform: rotate(-5.3deg) translateY(-7px);   }
+  68%     { transform: rotate(-6.8deg) translateY(-3px);   }
+}
+
+/* Pausa a animação no hover para não tremer ao interagir */
+.polaroid:hover {
+  animation-play-state: paused;
+}
+
+/* ── Responsividade ──────────────────────────── */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .polaroid {
+    width: 142px;
+    padding: 9px 9px 34px 9px;
+  }
+  .polaroid--tl { top: 32px; left: 20px; }
+  .polaroid--tr { top: 40px; right: 20px; }
+  .polaroid--bl { bottom: 40px; left: 20px; }
+  .polaroid--br { bottom: 32px; right: 20px; }
+}
+
+/* Mobile landscape / telas pequenas */
+@media (max-width: 640px) {
+  .polaroid {
+    width: 110px;
+    padding: 7px 7px 26px 7px;
+  }
+  .polaroid-caption { font-size: 0.60rem; margin-top: 5px; }
+  .polaroid-tape--h { width: 40px; height: 14px; top: -7px; }
+
+  .polaroid--tl { top: 16px; left: 10px; transform: rotate(-7deg); }
+  .polaroid--tr { top: 20px; right: 10px; transform: rotate(5.5deg); }
+  .polaroid--bl { bottom: 20px; left: 10px; transform: rotate(4deg); }
+  .polaroid--br { bottom: 16px; right: 10px; transform: rotate(-6deg); }
+
+  /* Animações menores no mobile */
+  @keyframes float-tl {
+    0%,100% { transform: rotate(-7deg)   translateY(0px); }
+    50%     { transform: rotate(-6.4deg) translateY(-3px); }
+  }
+  @keyframes float-tr {
+    0%,100% { transform: rotate(5.5deg)  translateY(0px); }
+    50%     { transform: rotate(4.9deg)  translateY(-4px); }
+  }
+  @keyframes float-bl {
+    0%,100% { transform: rotate(4deg)    translateY(0px); }
+    50%     { transform: rotate(3.4deg)  translateY(-3px); }
+  }
+  @keyframes float-br {
+    0%,100% { transform: rotate(-6deg)   translateY(0px); }
+    50%     { transform: rotate(-5.4deg) translateY(-3px); }
+  }
+}
+
+/* Telas muito pequenas — esconde polaroids pra não sufocar o centro */
+@media (max-width: 380px) {
+  .polaroids-stage { display: none; }
+}
