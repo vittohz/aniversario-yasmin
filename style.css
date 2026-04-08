@@ -814,144 +814,148 @@ body {
   }
 }
 
-/* ===============================
-POLAROID MEMORIES — CINEMATIC
-=============================== */
+/* ================================
+POLAROID SCENE — PROFESSIONAL
+================================ */
 
 .polaroid-scene{
+
   position:absolute;
   inset:0;
+
   pointer-events:none;
-  z-index:2;
+
+  z-index:1;
+
 }
 
-/* base polaroid */
+/* base */
 
 .polaroid{
+
   position:absolute;
 
   width:180px;
 
-  background:#fff;
+  background:#ffffff;
 
-  padding:12px 12px 36px 12px;
+  padding:12px 12px 36px;
 
-  border-radius:3px;
+  border-radius:2px;
 
   box-shadow:
-  0 30px 80px rgba(0,0,0,.7),
-  0 8px 18px rgba(0,0,0,.4);
+
+  0 40px 90px rgba(0,0,0,.75),
+  0 12px 25px rgba(0,0,0,.45);
 
   transform-origin:center;
 
-  animation:
-  polaroidFloat 7s ease-in-out infinite alternate;
+  transition:
+  transform .45s ease,
+  box-shadow .45s ease;
+
 }
 
-/* imagem */
+/* foto */
 
 .polaroid img{
 
   width:100%;
+
   display:block;
 
   filter:
-  contrast(1.08)
-  saturate(.92)
-  brightness(.96)
-  sepia(.05);
+  contrast(1.05)
+  saturate(.9)
+  brightness(.96);
+
 }
 
-/* legenda escrita */
+/* fita */
 
-.polaroid figcaption{
-
-  margin-top:10px;
-
-  font-family:"IM Fell English", serif;
-
-  font-size:14px;
-
-  text-align:center;
-
-  color:#2c2c2c;
-
-  opacity:.8;
-}
-
-/* fita adesiva */
-
-.polaroid .tape{
+.tape{
 
   position:absolute;
 
-  top:-14px;
+  top:-12px;
+
   left:50%;
 
-  transform:translateX(-50%) rotate(-4deg);
+  transform:translateX(-50%) rotate(-3deg);
 
   width:70px;
+
   height:22px;
 
   background:rgba(255,255,255,.55);
 
   backdrop-filter:blur(3px);
 
-  box-shadow:
-  0 2px 6px rgba(0,0,0,.25);
-
-  border-radius:2px;
-}
-
-/* animação leve */
-
-@keyframes polaroidFloat{
-
-  0%{
-    transform:translateY(0) rotate(var(--rot));
-  }
-
-  100%{
-    transform:translateY(-10px) rotate(var(--rot));
-  }
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
 
 }
 
-/* hover elegante */
+/* hover suave */
 
 .polaroid:hover{
 
-  transform:
-  scale(1.05)
-  rotate(var(--rot));
+  transform:scale(1.05);
 
   box-shadow:
-  0 45px 120px rgba(0,0,0,.85),
-  0 12px 28px rgba(0,0,0,.5);
+
+  0 60px 140px rgba(0,0,0,.85),
+  0 18px 40px rgba(0,0,0,.55);
+
 }
 
-/* posições */
+/* ================================
+POSIÇÕES NOS CANTOS
+================================ */
 
-.p1{
-  top:45%;
-  left:65%;
-  --rot:-8deg;
+/* canto superior esquerdo */
+
+.polaroid-tl{
+
+  top:6%;
+
+  left:5%;
+
+  transform:rotate(-8deg);
+
 }
 
-.p2{
-  top:16%;
-  right:10%;
-  --rot:6deg;
+/* canto superior direito */
+
+.polaroid-tr{
+
+  top:7%;
+
+  right:6%;
+
+  transform:rotate(7deg);
+
 }
 
-.p3{
-  bottom:20%;
-  left:12%;
-  --rot:5deg;
+/* canto inferior esquerdo */
+
+.polaroid-bl{
+
+  bottom:7%;
+
+  left:6%;
+
+  transform:rotate(5deg);
+
 }
 
-.p4{
-  bottom:12%;
-  right:14%;
-  --rot:-7deg;
+/* canto inferior direito */
+
+.polaroid-br{
+
+  bottom:6%;
+
+  right:5%;
+
+  transform:rotate(-7deg);
+
 }
